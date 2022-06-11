@@ -2,6 +2,8 @@
 
 ## This Example Includes...
 - Yaml-based routes
+- Direct Routes
+- Normal Bean
 - CDI Bean
 - Annotation-based consumer
 - Rest endpoint -> JMS messages
