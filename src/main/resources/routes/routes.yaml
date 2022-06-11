@@ -1,0 +1,42 @@
+- route:
+    id: "rest-put-submission"
+    from:
+      uri: rest:put:submission
+    steps:
+    - to: "direct:file-body-handler"
+- route:
+    id: "rest-post-submission"
+    from:
+      uri: rest:post:submission
+    steps:
+    - to: "direct:file-body-handler"
+- route:
+    id: "file-body-handler"
+    from:
+      uri: "direct:file-body-handler"
+    steps:
+    - setHeader:
+        name: conversationId
+        method: "io.github.chrisruffalo.camel.example.ExampleBean"
+    - log: "[${headers.CamelHttpMethod}] ${header.conversationId} received"
+    - to: "file:target/output?fileName=${header.conversationId}.message"
+    - transform:
+        simple: "thanks for: ${headers.conversationId}"
+- route:
+    id: "create-activemq-for-new-submission"
+    from:
+        uri: "file:target/output?noop=true"
+    steps:
+    - log: "sending message for ${headers.CamelFileAbsolutePath}"
+    - setBody:
+        simple: "${headers.CamelFileAbsolutePath}"
+    - to: "activemq:queue:process-file"
+- route:
+      id: "handle-new-file"
+      from:
+          uri: "activemq:queue:process-file"
+      steps:
+      - log: "[${headers.CamelFileNameConsumed}] processing file ${headers.CamelFileAbsolutePath}"
+      - to: "bean:fileProcessor"
+      - to: "activemq:topic:done-file"
+
