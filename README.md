@@ -22,7 +22,6 @@
 - `amqp-password` (default: admin) the amqp broker password
 
 ## Running in Dev Mode
-Then start Quarkus Dev Mode:
 ```bash
 []$ mvn quarkus:dev
 ```
