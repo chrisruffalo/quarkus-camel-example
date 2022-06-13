@@ -1,15 +1,19 @@
+# rest put -> direct submission
 - route:
     id: "rest-put-submission"
     from:
       uri: rest:put:submission
     steps:
     - to: "direct:file-body-handler"
+# rest post -> direct submission
 - route:
     id: "rest-post-submission"
     from:
       uri: rest:post:submission
     steps:
     - to: "direct:file-body-handler"
+# shared route for implementation of file body handling
+# which is really just to put the file body to disk
 - route:
     id: "file-body-handler"
     from:
@@ -17,26 +21,31 @@
     steps:
     - setHeader:
         name: conversationId
-        method: "io.github.chrisruffalo.camel.example.ExampleBean"
+        method: "io.github.chrisruffalo.camel.example.UuidBean"
     - log: "[${headers.CamelHttpMethod}] ${header.conversationId} received"
     - to: "file:target/output?fileName=${header.conversationId}.message"
     - transform:
         simple: "thanks for: ${headers.conversationId}"
+# when the file is written to disk (could be s3/ceph/shared) this fires a message
+# to notify other components that a file is on disk and ready to be processed
 - route:
-    id: "create-activemq-for-new-submission"
+    id: "create-amqp-for-new-submission"
     from:
         uri: "file:target/output?noop=true"
     steps:
     - log: "sending message for ${headers.CamelFileAbsolutePath}"
     - setBody:
         simple: "${headers.CamelFileAbsolutePath}"
-    - to: "activemq:queue:process-file"
+    - to: "amqp:queue:process-file"
+# the processing bean is notified of new files
 - route:
       id: "handle-new-file"
       from:
-          uri: "activemq:queue:process-file"
+          uri: "amqp:queue:process-file"
       steps:
       - log: "[${headers.CamelFileNameConsumed}] processing file ${headers.CamelFileAbsolutePath}"
+      # the named bean processes the file
       - to: "bean:fileProcessor"
-      - to: "activemq:topic:done-file"
+      # a message is sent out to interested parties that the file has been processed
+      - to: "amqp:topic:done-file"
 

@@ -7,6 +7,9 @@ import org.jboss.logging.Logger;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+/**
+ * Handles notifications when files are done being processed
+ */
 @ApplicationScoped
 @RegisterForReflection
 public class FileNotificationConsumer {
@@ -14,9 +17,14 @@ public class FileNotificationConsumer {
     @Inject
     Logger logger;
 
-    @Consume("activemq:topic:done-file")
-    public void onFileFinished(final String fileName) {
-        logger.infof("Got notification for file %s", fileName);
+    /**
+     * Example of a component that listens on a topic as a bean.
+     *
+     * @param messageBody the body of the message received
+     */
+    @Consume("amqp:topic:done-file")
+    public void onFileFinished(final String messageBody) {
+        logger.infof("Got notification: %s", messageBody);
     }
 
 }
