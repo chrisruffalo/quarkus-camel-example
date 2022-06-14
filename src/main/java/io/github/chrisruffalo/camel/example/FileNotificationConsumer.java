@@ -2,7 +2,6 @@ package io.github.chrisruffalo.camel.example;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.apache.camel.Consume;
-import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.jboss.logging.Logger;
 

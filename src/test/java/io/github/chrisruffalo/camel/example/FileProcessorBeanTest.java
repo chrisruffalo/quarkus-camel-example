@@ -1,8 +1,7 @@
 package io.github.chrisruffalo.camel.example;
 
 
-import io.quarkus.deployment.dev.QuarkusDevModeLauncher;
-import io.quarkus.runtime.Quarkus;
+import io.github.chrisruffalo.camel.example.beans.TestFileProcessorBean;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -12,11 +11,10 @@ import org.junit.jupiter.api.*;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @QuarkusTest
-public class FileProcessorBeanTest {
+public class FileProcessorBeanTest extends CommonTest {
 
     @Inject
     Logger logger;
@@ -31,12 +29,12 @@ public class FileProcessorBeanTest {
 
     @Test
     public void putFile() throws InterruptedException {
-        final Response response = RestAssured.given().contentType("application/json")
-                .body("here is some data")
-                .put("/submission")
-                .then()
-                .statusCode(200)
-                .extract().response();
+        this.putData("some data");
+    }
+
+    @Test
+    public void postFile() throws InterruptedException {
+        this.postData("some data");
     }
 
     @Test
@@ -44,12 +42,7 @@ public class FileProcessorBeanTest {
         @Tag("full") // do not run in dev mode
     })
     public void putFileFull() throws InterruptedException, IOException {
-        final Response response = RestAssured.given().contentType("application/json")
-                .body("here is some data")
-                .put("/submission")
-                .then()
-                .statusCode(200)
-                .extract().response();
+        final Response response = this.putData("here is some test data");
 
         // use response body to get uuid
         final String uuid = response.body().asString().substring("thanks for: ".length()); // simple parse of the uuid from message

@@ -1,10 +1,10 @@
 package io.github.chrisruffalo.camel.example;
 
-import io.quarkus.arc.Priority;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.apache.camel.Exchange;
 import org.jboss.logging.Logger;
 
+import javax.annotation.Priority;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
 import javax.inject.Inject;

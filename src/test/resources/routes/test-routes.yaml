@@ -1,0 +1,9 @@
+# the processing bean is notified of new files
+- route:
+      id: "test-done-notification"
+      from:
+          uri: "amqp:topic:done-file"
+      steps:
+      - log: "[${headers.CamelFileNameConsumed}] done file ${headers.CamelFileAbsolutePath}"
+      - to: "bean:testWaitBean?method=completeWith"
+
