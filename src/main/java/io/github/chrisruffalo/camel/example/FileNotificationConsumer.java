@@ -2,6 +2,8 @@ package io.github.chrisruffalo.camel.example;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.apache.camel.Consume;
+import org.apache.camel.Exchange;
+import org.apache.camel.Message;
 import org.jboss.logging.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -20,11 +22,15 @@ public class FileNotificationConsumer {
     /**
      * Example of a component that listens on a topic as a bean.
      *
-     * @param messageBody the body of the message received
+     * @param message the observed message
      */
     @Consume("amqp:topic:done-file")
-    public void onFileFinished(final String messageBody) {
-        logger.infof("Got notification: %s", messageBody);
+    public void onFileFinished(final Message message) {
+        if(message.getHeaders().containsKey("conversationId")) {
+            logger.infof("Got notification of conversation %s", message.getHeader("conversationId"));
+        } else {
+            logger.infof("Got notification for body: %s", message.getBody());
+        }
     }
 
 }

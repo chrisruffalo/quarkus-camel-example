@@ -54,7 +54,21 @@ public class FileProcessorBean implements FileProcessor {
         );
 
         filePath.ifPresent(path -> {
+            // restore the conversation id
+            String conversationId = path.getFileName().toString();
+            if(conversationId.endsWith(".message")) {
+                conversationId = conversationId.substring(0, conversationId.length() - ".message".length());
+            }
+            if (!conversationId.isEmpty()) {
+                exchange.getIn().setHeader("conversationId", conversationId);
+            }
+
+            // todo: implement processing ???
+
+            // say we are done processing the file
             logger.infof("Done processing file %s", path);
+
+            // end processing
             postProcess(path);
         });
 
