@@ -3,6 +3,9 @@ package io.github.chrisruffalo.camel.example;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+/**
+ * "Vanilla" (non-Quarkus) JUnit test.
+ */
 public class UuidBeanTest {
 
     @Test

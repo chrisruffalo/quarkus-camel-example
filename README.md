@@ -12,6 +12,7 @@
 - Annotation-based consumer
 - Rest endpoint -> JMS messages
 - AMQP Client Connections
+- Test-time Camel routes (adding additional routes)
 
 ## Configuration
 
