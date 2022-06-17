@@ -7,12 +7,14 @@
 ## This Example Includes...
 - Yaml-based routes
 - Direct Routes
-- Normal Bean
-- CDI Bean
+- Camel Beans
+  - Normal Bean
+  - CDI Bean
 - Annotation-based consumer
 - Rest endpoint -> JMS messages
 - AMQP Client Connections
 - Test-time Camel routes (adding additional routes)
+- Practical and Idiomatic testing of Camel features
 
 ## Configuration
 
