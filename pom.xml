@@ -99,7 +99,7 @@
             <artifactId>camel-quarkus-direct</artifactId>
         </dependency>
         <!-- not directly using reactive messaging but want the testcontainer support in dev/test -->
-        <!-- if another way to active the test container is found then this can be removed -->
+        <!-- if another way to activate the test container is found then this can be removed -->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-smallrye-reactive-messaging-amqp</artifactId>

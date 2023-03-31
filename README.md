@@ -3,6 +3,7 @@
 ## Requirements
 - Maven 3.8.x
 - Docker
+- GraalVM (22.0.0.2.r17)
 
 ## This Example Includes...
 - Yaml-based routes
@@ -15,6 +16,7 @@
 - AMQP Client Connections
 - Test-time Camel routes (adding additional routes)
 - Practical and Idiomatic testing of Camel features
+- Native Integration Tests
 
 ## Configuration
 
